@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "target": "ES6",
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "outDir": "back-dist"
+  },
+
+  "includes": ["back-src"],
+  "exclude": ["front-src"]
+}

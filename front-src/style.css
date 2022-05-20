@@ -1,0 +1,10 @@
+* {
+  box-sizing: border-box;
+}
+.root {
+  max-width: 1800px;
+
+  margin: 0 auto;
+  background-color: #ca64edb5;
+  height: 100%;
+}
