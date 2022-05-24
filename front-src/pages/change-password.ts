@@ -40,6 +40,9 @@ class ChangePassword extends HTMLElement {
         max-width: 205px;
         margin: 0 auto;
     }
+    .input{
+      margin-bottom: 5px;
+    }
 
 
       `;

@@ -11,3 +11,8 @@ import "./pages/update-report";
 import "./components/button";
 import "./components/header";
 import "./components/loading";
+import { state } from "./state";
+
+(() => {
+  state.init();
+})();

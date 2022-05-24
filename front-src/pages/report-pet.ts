@@ -101,9 +101,8 @@ class ReportPet extends HTMLElement {
               loadingContainer.setAttribute("style", "display:flex");
             }
             setTimeout(() => {
-              if (cs.meReport.namePet) {
-                Router.go("me-reports");
-              }
+              ///agregar donde crea el reporte  un create: true asi podemos hacer un if con esa info para que luego funcione el router
+              Router.go("me-reports");
             }, 5000);
           });
           form.reset();
@@ -135,6 +134,10 @@ class ReportPet extends HTMLElement {
       align-items: center;
       text-align: center;
       margin: 0 auto;
+      padding: 29px;
+    }
+    .container-titles{
+      padding: 20px 0 1px 0px;
     }
     .form{
       display: flex;
@@ -178,7 +181,7 @@ class ReportPet extends HTMLElement {
         </div>
 
         <form class="form">
-           <input class="input" name="nombre" type="text" placeholder="Ingrese nombre de su mascota"/>
+           <input class="input" name="nombre" type="text" placeholder="Nombre de su mascota"/>
          <div class="profile-picturer-container">
              <img class="profile-picture" src="${insertImg}" alt="" />
              <h3 class="text-indication">Arrastrá tu foto aquí</h3>

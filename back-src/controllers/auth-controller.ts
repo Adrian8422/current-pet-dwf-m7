@@ -144,6 +144,7 @@ export async function reportPetUser(userId: number, dataUser) {
           objectID: reportCreate.get("id"),
           name: reportCreate.get("namePet"),
           location: reportCreate.get("location"),
+          pictureURL: imagen.secure_url,
           _geoloc: {
             lat: reportCreate.get("lat"),
             lng: reportCreate.get("lng"),

@@ -54,6 +54,7 @@ export async function updateReportPet(userId: number, reportId, dataUser) {
         objectID: report.get("id"),
         name: report.get("namePet"),
         location: report.get("location"),
+        pictureURL: imagen.secure_url,
         _geoloc: {
           lat: report.get("lat"),
           lng: report.get("lng"),

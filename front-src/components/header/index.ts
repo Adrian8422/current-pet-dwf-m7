@@ -11,13 +11,17 @@ class Header extends HTMLElement {
     style.innerHTML = `
 
     .header{
-       display: flex;
-       max-width: 1320px;
-       margin: 0 auto;
-       flex-direction: row;
-       justify-content: space-between;
-       background-color: #cb00ff;
-       border-radius:4px;
+      display: flex;
+      margin: 0 auto;
+      flex-direction: row;
+      justify-content: space-between;
+      background-color: #05d3d9ed;
+      position: fixed;
+      left: 8px;
+      right: 8px;
+      top: 8px;
+      max-width: 1000px;
+      border-radius: 13px;
 
     }
     .container-logo{
@@ -26,8 +30,19 @@ class Header extends HTMLElement {
         width: 58px;
     }
     .window-header{
-        display:none;
-        flex-direction:column;
+      display: none;
+      flex-direction: column;
+      background-color: #dcdcdce8;
+      align-items: center;
+      height: 361px;
+      position: fixed;
+      top: 57px;
+      left: 8px;
+      right: 8px;
+      max-width: 800px;
+      margin: 0 auto;
+      border-radius: 4px;
+      justify-content: space-evenly;
     }
     .container__window-date{
         display:flex;
@@ -45,22 +60,7 @@ class Header extends HTMLElement {
         height: 45px;
         padding: 6px 15px 0 0;
     }
-    .window-header{
-        display: none;
-        flex-direction: column;
-        background-color: #dcdcdccc;
-        align-items: center;
-        height: 463px;
-        position: absolute;
-        top: 65px;
-        left: 0;
-        right: 0;
-        justify-content: center;
-        max-width: 800px;
-        margin: 0 auto;
-        border-radius: 4px;
-        justify-content: space-evenly;
-    }
+
     
     
 
@@ -72,11 +72,23 @@ class Header extends HTMLElement {
   }
   addlisteners() {
     const cs = state.getState();
+    /// SEGUN LA PAGE DONDE ESTE MODIFICO EL TOP DEL WINDOW HEADER
+    if (location.pathname == "/me-reports") {
+      const header = this.querySelector(".header");
+      header.setAttribute("style", "top:0");
+    }
+    if (location.pathname == "/home-oficial") {
+      const header = this.querySelector(".header");
+      header.setAttribute("style", "top:0");
+    }
+    if (location.pathname == "/me-reports") {
+      const windowHeader = this.querySelector(".window-header");
+      windowHeader.setAttribute("style", "top: 50px");
+    }
     /////ACOMODAR LA VENTANA DEL MENU BURGER PORQUE SE VA A LA DERECHA
     const menuBurger = this.querySelector(".menu-burger");
     const windowHeader = this.querySelector(".window-header");
     const closeWindowHeader = this.querySelector(".close-menu");
-    const closeSession = this.querySelector(".button-close-session");
 
     menuBurger.addEventListener("click", () => {
       windowHeader.setAttribute("style", "display:flex");
@@ -92,9 +104,18 @@ class Header extends HTMLElement {
     const meDate = this.querySelector(".meDate");
     const mePets = this.querySelector(".mePets");
     const meReport = this.querySelector(".meReport");
+    const petIcon = this.querySelector(".pet-icon");
+    petIcon.addEventListener("click", () => {
+      if (!cs.meDate.location.lat && !cs.meDate.location.lng) {
+        Router.go("/");
+      } else {
+        Router.go("home-oficial");
+      }
+    });
     meDate.addEventListener("click", () => {
       state.setPages("/me-page");
-      if (cs.registerDate.condition == "initiated") {
+      windowHeader.setAttribute("style", "display:none");
+      if (cs.meDate.condition == "initiated") {
         Router.go("me-page");
       } else {
         Router.go("sign");
@@ -102,7 +123,8 @@ class Header extends HTMLElement {
     });
     mePets.addEventListener("click", () => {
       state.setPages("/me-reports");
-      if (cs.registerDate.condition == "initiated") {
+      windowHeader.setAttribute("style", "display:none");
+      if (cs.meDate.condition == "initiated") {
         Router.go("me-reports");
       } else {
         Router.go("sign");
@@ -110,25 +132,21 @@ class Header extends HTMLElement {
     });
     meReport.addEventListener("click", () => {
       state.setPages("/report-pet");
-      if (cs.registerDate.condition == "initiated") {
+      windowHeader.setAttribute("style", "display:none");
+      if (cs.meDate.condition == "initiated") {
         Router.go("report-pet");
       } else {
         Router.go("sign");
       }
     });
-    //// Close session
-
-    closeSession.addEventListener("click", () => {
-      window.localStorage.removeItem("userTk");
-      Router.go("home-oficial");
-    });
   }
   render() {
+    const cs = state.getState();
     this.innerHTML = `
 
       <header class="header">
          <div class="container-logo">
-            <img src="${dog}" alt="">
+            <img class="pet-icon" src="${dog}" alt="">
          </div> 
          <div class="container-menu-burger" class="container-logo">
             <img class="menu-burger" src="${menuBurger}" alt="">
@@ -144,8 +162,8 @@ class Header extends HTMLElement {
                <h3 class="meReport">Reportar mascota</h3>
             </div>
             <div class="user-conected">
-               <h3>example adrian@gmail.com</h3>
-               <button class="button-close-session">Sign off</button>
+               <h3>User => ${cs.meDate.email}</h3>
+               
             </div>
          </div>
 

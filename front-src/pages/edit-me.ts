@@ -18,9 +18,12 @@ class EditMeDate extends HTMLElement {
       const email = target.email.value;
       console.log(name, email);
       state.updateMeDate(name, email);
+      state.setState(cs);
 
+      setTimeout(() => {
+        Router.go("me-page");
+      }, 3000);
       alert("Se cambiaron tus datos :D");
-      Router.go("me-page");
     });
   }
 
@@ -39,6 +42,9 @@ class EditMeDate extends HTMLElement {
         flex-direction: column;
         max-width: 205px;
         margin: 0 auto;
+    }
+    .input{
+      margin-bottom: 5px;
     }
 
 

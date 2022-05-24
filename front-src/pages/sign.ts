@@ -61,17 +61,23 @@ class Sign extends HTMLElement {
         if (cs.registerDate.condition == "initiated") {
           alert("login successfull :D");
           Router.go(cs.registerDate.pages) || Router.go("/");
-        } else if (cs.registerDate.condition == "initiated") {
+        } else if (cs.registerDate.condition !== "initiated") {
           alert("email or password incorrect");
           Router.go("sign");
         }
-      }, 3000);
+      }, 2000);
     });
   }
 
   render() {
     const style = document.createElement("style");
     style.innerHTML = `
+    .container-page{
+      display: flex;
+      flex-direction: column;
+      height: 448px;
+      justify-content: center;
+    }
     .form-signin{
       width: 266px;
       text-align: center;
@@ -79,9 +85,19 @@ class Sign extends HTMLElement {
       margin: 0 auto;
       display: flex;
       align-items: center;
+      padding: 10px 0px 5px 1px;
+    }
+    .container-get-register{
+      display: flex;
+      flex-direction: column;
+      padding: 14px 35px 6px 59px;
+      max-width: 291px;
     }
     .container-get-login{
       display:none;
+      flex-direction: column;
+      padding: 14px 35px 6px 59px;
+      max-width: 291px;
     }
 
     .form-signup{
@@ -92,6 +108,9 @@ class Sign extends HTMLElement {
       display: none;
       align-items: center;
 
+    }
+    .input{
+      margin-bottom: 5px;
     }
     
 
@@ -162,6 +181,7 @@ class Sign extends HTMLElement {
     </form>
     
         `;
+    this.className = "container-page";
     this.appendChild(style);
     this.addListeners();
   }

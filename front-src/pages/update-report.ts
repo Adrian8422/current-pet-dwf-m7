@@ -2,20 +2,20 @@ import { Router } from "@vaadin/router";
 import { state } from "../state";
 import { Dropzone } from "dropzone";
 import * as mapboxgl from "mapbox-gl";
-import { json } from "body-parser";
-const MapboxClient = require("mapbox");
+import MapboxClient from "mapbox";
 const mapboxClient = new MapboxClient(process.env.MAPBOX_TOKEN);
 
 const imgPencil = require("../assets/pencil.png");
 class UpdateReport extends HTMLElement {
   connectedCallback() {
-    state.getOneReport(window.localStorage.getItem("idReport"));
-    state.subscribe(() => {
-      const cs = state.getState();
-      this.card = cs.meReport;
-      this.render();
-    });
     this.render();
+    // state.getOneReport(window.localStorage.getItem("idReport"));
+    // state.subscribe(() => {
+    //   const cs = state.getState();
+    //   this.card = cs.meReport;
+    //   this.render();
+    // });
+    // this.render();
   }
 
   addListeners() {
@@ -34,10 +34,11 @@ class UpdateReport extends HTMLElement {
       pictureURL = file.dataURL;
     });
 
-    const reportForm = this.querySelector(".form");
-    reportForm.addEventListener("submit", (event) => {
-      event.preventDefault();
-    });
+    // const reportForm = this.querySelector(".form");
+    // reportForm.addEventListener("submit", (event) => {
+    //   event.preventDefault();
+    // });
+
     function initMap() {
       mapboxgl.accessToken = process.env.MAPBOX_TOKEN;
       return new mapboxgl.Map({
@@ -96,8 +97,9 @@ class UpdateReport extends HTMLElement {
           ///SETEAMOS LOS DATOS DEL REPORT Y LUEGO LO ENVIAMOS
           state.setDatesMeReport(lng, lat, name, location, pictureURL, () => {
             state.updateReport(window.localStorage.getItem("idReport"));
+            window.localStorage.removeItem("idReport");
+
             setTimeout(() => {
-              window.localStorage.removeItem("idReport");
               Router.go("me-reports");
             }, 5000);
           });
@@ -105,6 +107,9 @@ class UpdateReport extends HTMLElement {
         });
       });
     })();
+    // if (cs.meReport.modified == true) {
+
+    // }
 
     ////que hacer con esto - despues arreglarlo
 
@@ -116,10 +121,12 @@ class UpdateReport extends HTMLElement {
     //   }, 4000);
     // });
   }
-  card: [] = [];
+  card: [];
 
   render() {
+    // state.getOneReport(window.localStorage.getItem("idReport"));
     const cs = state.getState();
+    console.log("data del state en render", cs.meReport);
     const style = document.createElement("style");
     style.innerHTML = `
     .profile-picturer-container{
@@ -134,12 +141,15 @@ class UpdateReport extends HTMLElement {
         margin: 0;
       }
       .container-page{
-        height: 100%;
         display: flex;
         flex-direction: column;
         align-items: center;
         text-align: center;
         margin: 0 auto;
+        padding: 29px;
+      }
+      .container-titles{
+        padding: 20px 0 1px 0px;
       }
       .form{
         display: flex;
@@ -173,14 +183,13 @@ class UpdateReport extends HTMLElement {
     
     <div class="container-page">
         <div class="container-titles">
-           <h1 class="title-page">Mis
-           mascotas perdidas</h1>
+           <h1 class="title-page">Modificar reporte</h1>
         </div>
 
         <form class="form">
-           <input class="input" name="nombre" type="text" placeholder="${state.data.meReport.namePet}"/>
+           <input class="input" name="nombre" type="text" placeholder="${cs.meReport.namePet}"/>
          <div class="profile-picturer-container">
-             <img class="profile-picture" src="${state.data.meReport.pictureURL}" alt="" />
+             <img class="profile-picture" src="${cs.meReport.pictureURL}" alt="" />
              <h3 class="text-indication">Arrastrá tu foto aquí</h3>
          </div>
 

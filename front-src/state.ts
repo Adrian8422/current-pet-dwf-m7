@@ -1,22 +1,19 @@
 type Condition = "registered" | "initiated";
-type UserCreated = true | false;
-type StateUser = "actived" | "deactivated";
 
-const API_BASE_URL = "http://localhost:3001";
+const API_BASE_URL = "http://localhost:3002";
 import "lodash/map";
 
 const state = {
   data: {
     registerDate: {
       password: "",
-      userCreated: "",
+      userCreated: false,
       token: "",
       condition: "",
-      stateUser: "",
       pages: ([] = []),
     },
     meDate: {
-      error: "",
+      condition: "",
       name: "",
       token: "",
       password: "",
@@ -28,6 +25,8 @@ const state = {
       },
     },
     meReport: {
+      deleted: "",
+      modified: false,
       namePet: "",
       location: "",
       lat: false,
@@ -52,9 +51,6 @@ const state = {
     },
   },
   listeners: [],
-  init() {
-    localStorage.getItem("userTk");
-  },
 
   getState() {
     return this.data;
@@ -64,7 +60,18 @@ const state = {
     for (const cb of this.listeners) {
       cb();
     }
+    localStorage.setItem("meDate", JSON.stringify(this.data.meDate));
     console.log("el state a cambiado", newState);
+  },
+  init() {
+    let dataMe = this.getState();
+    if (!localStorage.meDate) {
+      this.setState(dataMe);
+    } else {
+      const localData = JSON.parse(localStorage.getItem("meDate"));
+      dataMe.meDate = localData;
+      this.setState(dataMe);
+    }
   },
 
   ////SECTION REPORT NOT USERS///////////
@@ -197,7 +204,9 @@ const state = {
         cs.meDate.email = data.user.email;
         cs.registerDate.password = data.auth.password;
         cs.meDate.password = data.auth.password;
+        cs.registerDate.userCreated = true;
         cs.registerDate.condition = "registered";
+        cs.meDate.condition = "registered";
         this.setState(cs);
       });
   },
@@ -218,6 +227,7 @@ const state = {
         cs.meDate.email = data.auth.email;
         cs.meDate.name = data.user.name;
         cs.registerDate.condition = "initiated";
+        cs.meDate.condition = "initiated";
         state.setState(cs);
       });
   },
@@ -236,8 +246,7 @@ const state = {
       .then((data) => {
         cs.meDate.email = data.myDataModified.email;
         cs.meDate.name = data.myDataModified.name;
-        ////ACA VER COMO PODER GUARDAR UN ERROR SI NO SE PUEDE MODIFICAR LOS DATOS ASI PUEDO MOSTRARLO EN LA PAGE CON UN ALERT!
-        cs.meDate.error = this.setState(cs);
+        this.setState(cs);
       });
   },
   changePassword(oldPassword, oldPasswordVerify, newPassword) {
@@ -264,20 +273,19 @@ const state = {
       });
   },
   closeSession() {
+    window.localStorage.removeItem("meDate");
     const cs = this.getState();
-    ///PROXIMO HACER, VACIAR REGISTER DATA Y ME DATA DEL STATE ASI SE REINICIA CUANDO CIERRO SESION :D
 
-    ////ACA LUEGO VAMOS A QUITAR EL TOKEN DEL LOCALSTORAGE CUANDO LO GUARDEMOS EN EL LOCAL STORAGE 4894♦68‗796♦98♦964b49
     (cs.registerDate.password = ""),
       (cs.registerDate.userCreated = ""),
       (cs.registerDate.token = ""),
       (cs.registerDate.condition = ""),
-      (cs.registerDate.stateUser = ""),
       (cs.registerDate.pages = [] = []);
 
     (cs.meDate.name = ""),
       (cs.meDate.token = ""),
       (cs.meDate.password = ""),
+      (cs.meDate.condition = ""),
       (cs.meDate.reportsByMe = []),
       (cs.meDate.email = ""),
       (cs.meDate.location = {
@@ -367,8 +375,26 @@ const state = {
   },
 
   ////GET ONE REPORT
-  saveIdReportEdit(id) {
+  saveAndGetIdReportEdit(id) {
     window.localStorage.setItem("idReport", id);
+    const cs = this.getState();
+    fetch(API_BASE_URL + "/me/report/" + id, {
+      method: "get",
+      headers: {
+        "content-type": "application/json",
+        authorization: `bearer ${cs.meDate.token}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("el report elegido", data);
+        cs.meReport.namePet = data.namePet;
+        cs.meReport.location = data.location;
+        cs.meReport.lat = data.lat;
+        cs.meReport.lng = data.lng;
+        cs.meReport.pictureURL = data.pictureURL;
+        this.setState(cs);
+      });
   },
   updateReport(idReport) {
     const cs = this.getState();
@@ -395,34 +421,55 @@ const state = {
       .then((res) => res.json())
       .then((data) => {
         console.log("data modificada", data);
+        cs.meReport.modified = true;
         // cs.meReport.namePet = data.namePet;
         // cs.meReport.location = data.location;
         // cs.meReport.lat = data.lat;
         // cs.meReport.lng = data.lng;
         // cs.meReport.pictureURL = data.pictureURL;
-        // this.setState(cs);
+        this.setState(cs);
       });
   },
-  getOneReport(id) {
+
+  deletedReport(id, callback?) {
     const cs = this.getState();
-    fetch(API_BASE_URL + "/me/report/" + id, {
-      method: "get",
+    fetch(API_BASE_URL + "/delete-report/" + id, {
+      method: "delete",
       headers: {
-        "content-type": "application/json",
         authorization: `bearer ${cs.meDate.token}`,
+        "content-type": "application/json",
       },
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log("el report elegido", data);
-        cs.meReport.namePet = data.namePet;
-        cs.meReport.location = data.location;
-        cs.meReport.lat = data.lat;
-        cs.meReport.lng = data.lng;
-        cs.meReport.pictureURL = data.pictureURL;
+        console.log("datadeleted", data);
+        cs.meReport.deleted = data.message;
         this.setState(cs);
       });
+    if (callback) {
+      callback();
+    }
   },
+  // getOneReport(id) {
+  //   const cs = this.getState();
+  //   fetch(API_BASE_URL + "/me/report/" + id, {
+  //     method: "get",
+  //     headers: {
+  //       "content-type": "application/json",
+  //       authorization: `bearer ${cs.meDate.token}`,
+  //     },
+  //   })
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       console.log("el report elegido", data);
+  //       cs.meReport.namePet = data.namePet;
+  //       cs.meReport.location = data.location;
+  //       cs.meReport.lat = data.lat;
+  //       cs.meReport.lng = data.lng;
+  //       cs.meReport.pictureURL = data.pictureURL;
+  //       this.setState(cs);
+  //     });
+  // },
 };
 
 export { state };

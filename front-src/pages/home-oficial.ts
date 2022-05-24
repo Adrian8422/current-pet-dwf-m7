@@ -80,7 +80,14 @@ class HomeOficial extends HTMLElement {
     const style = document.createElement("style");
     style.innerHTML = `
      .home-page{
-       height:100%;
+      height: 100%;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+     }
+     .title-page{
+      padding: 46px 0 0 0;
      }
      .container-cards{
       display: flex;
@@ -97,10 +104,11 @@ class HomeOficial extends HTMLElement {
       border: solid 1px;
       border-radius: 5px;
       box-shadow: 2px 1px 8px 2px;
+      margin-bottom: 51px;
      }
      .img-card{
       padding: 4px;
-      max-width: 260px;
+      max-width: 185px;
      }
      .title-card{
        margin:0;
@@ -145,7 +153,7 @@ class HomeOficial extends HTMLElement {
             return `
       <div class="card">
         <div class="container-img">
-          <img class="img-card" src="${dogImg}" />
+          <img class="img-card" src="${c.pictureURL}" />
         </div>
         <div class="container-titles-card">
           <h2 class="title-card">${c.name}</h2>

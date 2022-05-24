@@ -26,9 +26,9 @@ class MeDate extends HTMLElement {
       windowCloseSession.setAttribute("style", "display:flex");
     });
     buttonCloseSessionInWindow.addEventListener("click", () => {
-      ////ACA PROXIMO TENGO QUE REEMPLAZAR EL USO DEL TOKEN DEL STATE Y UBICARLO EN LOCAL STORAGE
       state.closeSession();
       console.log("luego de cerrar sesion", state.data);
+      alert("sesion cerrada");
 
       Router.go("/");
     });
@@ -41,6 +41,13 @@ class MeDate extends HTMLElement {
     const cs = state.getState();
     const style = document.createElement("style");
     style.innerHTML = `
+    .container-page{
+      height: 409px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      text-align: center;
+    }
     .title-page{
       text-align: center;
     }

@@ -27,10 +27,22 @@ class MeReports extends HTMLElement {
       pencil.addEventListener("click", () => {
         const id = pencil.getAttribute("id");
         const idParse = parseInt(id);
-        state.saveIdReportEdit(idParse);
+        state.saveAndGetIdReportEdit(idParse);
+
         setTimeout(() => {
           Router.go("update-report");
-        }, 2000);
+        }, 3000);
+      });
+    });
+    const deletedReport = this.querySelectorAll(".deleted-report");
+    deletedReport.forEach((deleted) => {
+      deleted.addEventListener("click", () => {
+        const valor = deleted.getAttribute("value");
+        const id = parseInt(valor);
+        console.log("valor deleted", id);
+        state.deletedReport(id, () => {
+          state.getMeReports();
+        });
       });
     });
   }
@@ -40,25 +52,33 @@ class MeReports extends HTMLElement {
     const cs = state.getState();
     const style = document.createElement("style");
     style.innerHTML = `
+    .container-page{
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 53px;
+    }
     .container-cards{
       display: flex;
       flex-direction: column-reverse;
-      max-width: 302px;
+      max-width: 216px;
       justify-content: center;
       margin: 0 auto;
       margin-top: 60px;
    
      }
      .card{
-      max-width: 261px;
+      max-width: 260px;
       margin: 0 auto;
       border: solid 1px;
       border-radius: 5px;
       box-shadow: 2px 1px 8px 2px;
+      margin-bottom: 51px;
      }
      .img-card{
       padding: 4px;
-      max-width: 260px;
+      max-width: 185px;
      }
      .title-card{
       margin:0;
@@ -79,10 +99,19 @@ class MeReports extends HTMLElement {
      .container-edit-report{
       display: flex;
       flex-direction: row;
-      justify-content: flex-end;
+      justify-content: space-between;
+      align-items: center;
      }
      .pencil{
       padding: 0 3px 0px 0;
+     }
+     .deleted-report{
+      color: red;
+      font-family: sans-serif;
+      font-size: 14px;
+      padding: 2px 1px 0 0;
+      font-weight: 700;
+
      }
 
 
@@ -91,7 +120,7 @@ class MeReports extends HTMLElement {
   
    
 
-    <header-comp></header-comp>
+    <header-comp class="header-from-page"></header-comp>
     <div class="container-page">
     <h1>Me reports</h1>
 
@@ -107,7 +136,7 @@ class MeReports extends HTMLElement {
                <div class="container-titles-card">
                  <h2 class="title-card">${c.namePet}</h2>
                  <p class="sub-title">${c.location}</p>       
-                 <div class="container-edit-report" href=""><img id="${c.id}" class="pencil" src="${imgPencil}" alt="" /></div>
+                 <div class="container-edit-report" href=""><div value="${c.id}" class="deleted-report">Deleted</div><img id="${c.id}" class="pencil" src="${imgPencil}" alt="" /></div>
                  
                </div>    
               </div>

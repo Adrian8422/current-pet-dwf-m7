@@ -9,7 +9,7 @@ class Homepage extends HTMLElement {
     .home-page{
       display: flex;
       flex-direction: column;
-      height: 810px;
+      height: 807px;
     }
     .container-titles{
       display: flex;
