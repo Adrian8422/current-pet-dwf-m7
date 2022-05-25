@@ -181,7 +181,7 @@ const state = {
     this.setState(cs);
   },
 
-  ///SECTION AUTHENTICATION AND DATES USERS
+  //SECTION AUTHENTICATION AND DATES USERS
 
   signUp(name, email, password, callback?) {
     const cs = this.getState();
