@@ -1,15 +1,7 @@
 {
-  "name": "resolucion-auth-cap-4",
+  "name": "app-pet",
   "version": "1.0.0",
   "license": "MIT",
-  "scripts": {
-    "sync": "ts-node ./back-src/sync.ts",
-    "dev": "nodemon --watch ./back-src/API/index.ts --exec ts-node ./back-src/develop.ts",
-    "build:front": "parcel build ./front-src/index.html",
-    "build:back": "tsc",
-    "build": "yarn build:back && yarn build:front",
-    "start": "node ./back-dist/develop.js"
-  },
   "dependencies": {
     "@sendgrid/mail": "^7.6.2",
     "@types/express": "^4.17.13",
@@ -40,5 +32,13 @@
     "process": "^0.11.10",
     "querystring-es3": "^0.2.1",
     "url": "^0.11.0"
+  },
+  "scripts": {
+    "sync": "ts-node ./back-src/sync.ts",
+    "dev": "nodemon --watch ./back-src/API/index.ts --exec ts-node ./back-src/develop.ts",
+    "build:front": "parcel build ./front-src/index.html",
+    "build:back": "tsc",
+    "build": "yarn build:back && yarn build:front",
+    "start": "node ./back-dist/develop.js"
   }
 }
