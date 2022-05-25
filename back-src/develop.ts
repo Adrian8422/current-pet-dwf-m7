@@ -1,2 +1,2 @@
 import "dotenv/config";
-import "./API/index.ts";
+import "./API/index";
