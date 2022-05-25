@@ -195,10 +195,12 @@ export async function deletedReport(reportId) {
   if (!reportId) {
     throw "error not idReport";
   }
+  const objectID = `${reportId}`;
   if (reportId) {
     const reportDeleted = await Report.destroy({
       where: { id: reportId },
     });
+    await index.deleteObject(objectID);
     return reportDeleted;
   }
 }

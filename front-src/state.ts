@@ -1,7 +1,4 @@
-type Condition = "registered" | "initiated";
-
 const API_BASE_URL = "http://localhost:3002";
-import "lodash/map";
 
 const state = {
   data: {
@@ -126,9 +123,7 @@ const state = {
 
   ////PREPARO EL MENSAJE PARA ENVIAR
   sentReportNotUser({ id, cellphone, nameReporter, message }, callback?) {
-    ///HARDCODE- ACOMODAR
     const cs = this.getState();
-    // const idReportSentMessage = cs.reportNotUser.idReports;
     fetch(API_BASE_URL + "/not-user-report/" + id, {
       method: "post",
       headers: {
@@ -222,8 +217,6 @@ const state = {
       .then((res) => res.json())
       .then((data) => {
         cs.meDate.token = data.token;
-        ///CUANDO ESTE BIEN LA INTERACCION DE LAS PAGES- SETEAR PARA QUE EL TOKEN SE GUARDE EN LOCALSTORAGE Y SI ESTA ALLI FUNCIONE TODO SINO QUE ME PIDA LOGUEARME ARE NOW
-        // window.localStorage.setItem("userTk", `${data.token}`);
         cs.meDate.email = data.auth.email;
         cs.meDate.name = data.user.name;
         cs.registerDate.condition = "initiated";
@@ -277,7 +270,7 @@ const state = {
     const cs = this.getState();
 
     (cs.registerDate.password = ""),
-      (cs.registerDate.userCreated = ""),
+      (cs.registerDate.userCreated = false),
       (cs.registerDate.token = ""),
       (cs.registerDate.condition = ""),
       (cs.registerDate.pages = [] = []);
@@ -294,13 +287,6 @@ const state = {
       });
     this.setState(cs);
   },
-  ////SET PICTUREURL AND DATES IN CLOUDINARY
-  // setDatePictureCloud(URL) {
-  //   const cs = this.getState();
-  //   cs.meReport.pictureURL = URL;
-
-  //   this.setState(cs);
-  // },
 
   /// SET LAT AND LNG datesss todo MIREPORT IN STATE
 
@@ -318,10 +304,8 @@ const state = {
     }
   },
 
-  ////((((((((PROXIMO A REALIZAR , ENVIAR EL REPORTTE A TRAVES DEL STATE , NO USAR LOS DATOS DIRECTO DESDE LA PAGE))))))))
   ////Create Reports
   createReport() {
-    ///ACA TRAER TOKEN LOCALSTORAGE
     const cs = this.getState();
     const namePet = cs.meReport.namePet;
     const location = cs.meReport.location;
@@ -422,11 +406,6 @@ const state = {
       .then((data) => {
         console.log("data modificada", data);
         cs.meReport.modified = true;
-        // cs.meReport.namePet = data.namePet;
-        // cs.meReport.location = data.location;
-        // cs.meReport.lat = data.lat;
-        // cs.meReport.lng = data.lng;
-        // cs.meReport.pictureURL = data.pictureURL;
         this.setState(cs);
       });
   },
@@ -450,26 +429,6 @@ const state = {
       callback();
     }
   },
-  // getOneReport(id) {
-  //   const cs = this.getState();
-  //   fetch(API_BASE_URL + "/me/report/" + id, {
-  //     method: "get",
-  //     headers: {
-  //       "content-type": "application/json",
-  //       authorization: `bearer ${cs.meDate.token}`,
-  //     },
-  //   })
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       console.log("el report elegido", data);
-  //       cs.meReport.namePet = data.namePet;
-  //       cs.meReport.location = data.location;
-  //       cs.meReport.lat = data.lat;
-  //       cs.meReport.lng = data.lng;
-  //       cs.meReport.pictureURL = data.pictureURL;
-  //       this.setState(cs);
-  //     });
-  // },
 };
 
 export { state };

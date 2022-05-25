@@ -4,7 +4,6 @@ import * as cors from "cors";
 import { sequelize } from "../models/connection";
 import {
   authToken,
-  // changePassword,
   changesPassword,
   deletedReport,
   findOrCreateUser,

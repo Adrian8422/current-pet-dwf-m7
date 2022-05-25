@@ -19,6 +19,9 @@ function bodyParse(body, id) {
       lng: body.lng,
     };
   }
+  if (body.pictureURL) {
+    resultado.pictureURL = body.pictureURL;
+  }
   if (id) {
     resultado.objectID = id;
   }

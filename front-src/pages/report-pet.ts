@@ -3,7 +3,6 @@ import { state } from "../state";
 import { Dropzone } from "dropzone";
 import * as mapboxgl from "mapbox-gl";
 import MapboxClient from "mapbox";
-// import { json } from "body-parser";
 const mapboxClient = new MapboxClient(process.env.MAPBOX_TOKEN);
 
 const insertImg = require("../assets/insertImg.png");
@@ -101,7 +100,6 @@ class ReportPet extends HTMLElement {
               loadingContainer.setAttribute("style", "display:flex");
             }
             setTimeout(() => {
-              ///agregar donde crea el reporte  un create: true asi podemos hacer un if con esa info para que luego funcione el router
               Router.go("me-reports");
             }, 5000);
           });

@@ -9,13 +9,6 @@ const imgPencil = require("../assets/pencil.png");
 class UpdateReport extends HTMLElement {
   connectedCallback() {
     this.render();
-    // state.getOneReport(window.localStorage.getItem("idReport"));
-    // state.subscribe(() => {
-    //   const cs = state.getState();
-    //   this.card = cs.meReport;
-    //   this.render();
-    // });
-    // this.render();
   }
 
   addListeners() {
@@ -103,28 +96,13 @@ class UpdateReport extends HTMLElement {
               Router.go("me-reports");
             }, 5000);
           });
-          // form.reset();
         });
       });
     })();
-    // if (cs.meReport.modified == true) {
-
-    // }
-
-    ////que hacer con esto - despues arreglarlo
-
-    // const buttonReturnPage = this.querySelector(".return-unchanged");
-    // buttonReturnPage.addEventListener("click", () => {
-    //   setTimeout(() => {
-    //     Router.go("me-reports");
-    //     state.getMeReports();
-    //   }, 4000);
-    // });
   }
   card: [];
 
   render() {
-    // state.getOneReport(window.localStorage.getItem("idReport"));
     const cs = state.getState();
     console.log("data del state en render", cs.meReport);
     const style = document.createElement("style");

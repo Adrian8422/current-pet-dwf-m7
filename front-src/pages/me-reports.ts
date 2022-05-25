@@ -10,6 +10,7 @@ class MeReports extends HTMLElement {
   }
   connectedCallback() {
     state.getMeReports();
+
     state.subscribe(() => {
       const cs = state.getState();
       this.cardMeReports = cs.meDate.reports;
@@ -20,6 +21,11 @@ class MeReports extends HTMLElement {
 
   addListeners() {
     const cs = state.getState();
+    const notPetTitle = this.querySelector(".not-pet");
+
+    if (cs.meDate.reports[0]) {
+      notPetTitle.setAttribute("style", "display:none");
+    }
 
     ///REDIRIJO A PAGE EDIT REPORT DESDE LA CARD QUE TOQUE OBTENIENDO EL ID DE LA CARD
     const editRedirectPage = this.querySelectorAll(".pencil");
@@ -31,7 +37,7 @@ class MeReports extends HTMLElement {
 
         setTimeout(() => {
           Router.go("update-report");
-        }, 3000);
+        }, 1000);
       });
     });
     const deletedReport = this.querySelectorAll(".deleted-report");
@@ -41,7 +47,9 @@ class MeReports extends HTMLElement {
         const id = parseInt(valor);
         console.log("valor deleted", id);
         state.deletedReport(id, () => {
-          state.getMeReports();
+          setTimeout(() => {
+            state.getMeReports();
+          }, 2000);
         });
       });
     });
@@ -58,6 +66,11 @@ class MeReports extends HTMLElement {
       justify-content: center;
       align-items: center;
       padding: 53px;
+    }
+    .not-pet{
+      display:flex;
+      justify-content:center;
+      text-align:center;
     }
     .container-cards{
       display: flex;
@@ -121,8 +134,12 @@ class MeReports extends HTMLElement {
    
 
     <header-comp class="header-from-page"></header-comp>
+    
     <div class="container-page">
     <h1>Me reports</h1>
+        <div class="not-pet">
+            <h3 class="title-not-pet">No hay reportes</h3>
+        </div>
 
         <div class="container-cards">
         ${this.cardMeReports

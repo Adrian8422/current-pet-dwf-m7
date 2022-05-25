@@ -16,8 +16,10 @@ class HomeOficial extends HTMLElement {
 
   addListeners() {
     const cs = state.getState();
-    // const refresh = document.querySelector(".button-refresh");
-    // refresh.addEventListener("click", () => {});
+    const notPetTitle = this.querySelector(".not-pet");
+    if (cs.reportNotUser.reportsCloseToMe[0]) {
+      notPetTitle.setAttribute("style", "display:none");
+    }
 
     /// ACTIVO CADA FORMULARIO
     const sentReportNotUser = this.querySelectorAll(".report-info");
@@ -89,6 +91,11 @@ class HomeOficial extends HTMLElement {
      .title-page{
       padding: 46px 0 0 0;
      }
+     .not-pet{
+       display:flex;
+       justify-content:center;
+       text-align:center;
+     }
      .container-cards{
       display: flex;
       flex-direction: column;
@@ -146,6 +153,10 @@ class HomeOficial extends HTMLElement {
     <div class="container-titles">
       <h1 class="title-page">Mascotas perdidas cerca tuyo</h1>
     </div>
+    <div class="not-pet">
+       <h3 class="title-not-pet">No hay mascotas cerca tuyo</h3>
+    
+    </div>
     <div class="container-cards">
       ${this.cardPets
         .map((c: any) => {
@@ -191,7 +202,7 @@ class HomeOficial extends HTMLElement {
     </div>
 
 
-    <button class="button-refresh">Refresh</button>
+    
   </div>
         `;
     this.appendChild(style);
