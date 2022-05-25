@@ -1,4 +1,4 @@
-const API_BASE_URL = process.env.DB_HOST;
+const API_BASE_URL = "https://pet-app-dwf-m7.herokuapp.com";
 
 const state = {
   data: {

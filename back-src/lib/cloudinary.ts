@@ -1,7 +1,7 @@
 import { v2 as cloudinary } from "cloudinary";
 cloudinary.config({
   cloud_name: "apxs",
-  api_key: "634495134523375",
+  api_key: process.env.API_KEY_CLOUDINARY,
   api_secret: process.env.SECRET_CLOUDINARY,
 });
 
