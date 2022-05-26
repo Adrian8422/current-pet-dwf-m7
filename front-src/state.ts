@@ -1,4 +1,7 @@
-const API_BASE_URL = "https://pet-app-dwf-m7.herokuapp.com";
+type Condition = "registered" | "initiated";
+
+const API_BASE_URL =
+  "https://pet-app-dwf-m7.herokuapp.com" || "http://localhost:3002";
 
 const state = {
   data: {
@@ -71,7 +74,7 @@ const state = {
     }
   },
 
-  ////SECTION REPORT NOT USERS///
+  ////SECTION REPORT NOT USERS///////////
 
   getReports() {
     const cs = this.getState();
@@ -181,7 +184,7 @@ const state = {
     this.setState(cs);
   },
 
-  //SECTION AUTHENTICATION AND DATES USERS
+  ////SECTION AUTHENTICATION AND DATES USERS
 
   signUp(name, email, password, callback?) {
     const cs = this.getState();

@@ -4,6 +4,7 @@ import * as cors from "cors";
 import { sequelize } from "../models/connection";
 import {
   authToken,
+  // changePassword,
   changesPassword,
   deletedReport,
   findOrCreateUser,
@@ -31,7 +32,7 @@ import { sendEmailToUser, transporter } from "../lib/mailer";
 
 const pathResolve = path.resolve("", "dist/index.html");
 const app = express();
-const port = process.env.PORT || 3003;
+const port = process.env.PORT || 3002;
 
 app.use(express.json());
 app.use(cors());
