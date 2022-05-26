@@ -1,7 +1,7 @@
 type Condition = "registered" | "initiated";
 
-const API_BASE_URL =
-  "https://pet-app-dwf-m7.herokuapp.com" || "http://localhost:3002";
+const API_BASE_URL = "https://pet-app-dwf-m7.herokuapp.com";
+// "http://localhost:3002"
 
 const state = {
   data: {
