@@ -25,3 +25,5 @@ export async function sendEmailToUser(
     });
   return { email: true, enviarMail };
 }
+
+////HAY ALGO MAL, HAY QUE ACOMODARLO PARA QUE ENVIE EL MENSAJE Y PARA QUE SE VEA TODO. DALEEE QUE SE PUEDE :DDDDD
