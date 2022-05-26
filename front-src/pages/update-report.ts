@@ -33,7 +33,8 @@ class UpdateReport extends HTMLElement {
     // });
 
     function initMap() {
-      mapboxgl.accessToken = process.env.MAPBOX_TOKEN;
+      mapboxgl.accessToken =
+        "pk.eyJ1IjoiYWRyaWFuODQyMiIsImEiOiJjbDFteWtkMXEwanFxM2N1a3U4N3ljOThxIn0.KgNsisHDoUb9VN-TEHzoGQ";
       return new mapboxgl.Map({
         container: "map",
         style: "mapbox://styles/mapbox/streets-v11",
