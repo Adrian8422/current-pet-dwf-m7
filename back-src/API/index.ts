@@ -28,7 +28,7 @@ import {
   searchDatesInAlgolia,
   updateReportPet,
 } from "../controllers/report-controller";
-import { sendEmailToUser, transporter } from "../lib/mailer";
+import { sendEmailToUser } from "../lib/sendgrid";
 
 const pathResolve = path.resolve("", "dist/index.html");
 const app = express();

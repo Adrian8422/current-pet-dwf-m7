@@ -98,7 +98,7 @@ class HomeOficial extends HTMLElement {
      }
      .container-cards{
       display: flex;
-      flex-direction: column;
+      flex-direction: column-reverse;
       max-width: 302px;
       justify-content: center;
       margin: 0 auto;
