@@ -7,7 +7,6 @@ class Sign extends HTMLElement {
   connectedCallback() {
     this.render();
   }
-
   addListeners() {
     const cs = state.getState();
     ////cambio de formulario segun eleccion
