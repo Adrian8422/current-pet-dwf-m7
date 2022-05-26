@@ -30,13 +30,13 @@ import {
 } from "../controllers/report-controller";
 import { sendEmailToUser, transporter } from "../lib/mailer";
 
-const pathResolve = path.resolve(__dirname, "../../dist");
+const pathResolve = path.resolve("", "dist/index.html");
 const app = express();
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 3002;
 
 app.use(express.json());
 app.use(cors());
-app.use(express.static(pathResolve));
+app.use(express.static("dist"));
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
@@ -198,7 +198,7 @@ app.get("/env", (req, res) => {
 });
 
 app.get("*", (req, res) => {
-  res.sendFile(pathResolve + "/index.html");
+  res.sendFile(pathResolve);
 });
 
 app.listen(port, () => {
