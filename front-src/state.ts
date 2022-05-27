@@ -4,7 +4,6 @@ type Condition = "registered" | "initiated";
 const API_BASE_URL = "https://current-desafio-m-7.herokuapp.com";
 
 // ("https://pet-app-dwf-m7.herokuapp.com");
-//http://localhost:3001"
 
 const state = {
   data: {
