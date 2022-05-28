@@ -27,11 +27,6 @@ class UpdateReport extends HTMLElement {
       pictureURL = file.dataURL;
     });
 
-    // const reportForm = this.querySelector(".form");
-    // reportForm.addEventListener("submit", (event) => {
-    //   event.preventDefault();
-    // });
-
     function initMap() {
       mapboxgl.accessToken = process.env.MAPBOX_TOKEN;
       return new mapboxgl.Map({
@@ -146,9 +141,6 @@ class UpdateReport extends HTMLElement {
       .mapboxgl-control-container{
         display:none;
       }
-  
-      
-   
 
 
       `;

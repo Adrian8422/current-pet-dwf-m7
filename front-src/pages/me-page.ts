@@ -42,7 +42,7 @@ class MeDate extends HTMLElement {
     const style = document.createElement("style");
     style.innerHTML = `
     .container-page{
-      height: 409px;
+      height: 503px;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -69,6 +69,10 @@ class MeDate extends HTMLElement {
       background-color: #e66e6e;
     }
    
+    .button-window{
+      background-color: red;
+      color: white;
+    }
     
 
       `;

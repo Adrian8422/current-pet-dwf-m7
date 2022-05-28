@@ -42,14 +42,7 @@ class LoadComp extends HTMLElement {
             transform:
             translateY(-50px) scaleX(1);
         }
-    }
-
-    
-    
-    
-
-    
-    
+    } 
     
     `;
     this.appendChild(style);

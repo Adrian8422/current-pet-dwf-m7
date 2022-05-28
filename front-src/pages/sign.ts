@@ -46,7 +46,14 @@ class Sign extends HTMLElement {
       const name = target.nombre.value;
       const emailSignUp = target.emailSignUp.value;
       const passwordSignUp = target.passwordSignUp.value;
-      state.signUp(name, emailSignUp, passwordSignUp);
+      setTimeout(() => {
+        state.signUp(name, emailSignUp, passwordSignUp);
+        if (cs.registerDate.userCreated == true) {
+          alert("user register successfull 😉");
+        } else if (cs.registerDate.userCreated == false) {
+          alert("error in signup, please try again");
+        }
+      }, 2000);
       formSignUp.reset();
     });
     formSignIn.addEventListener("submit", (event) => {
