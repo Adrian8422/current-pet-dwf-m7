@@ -124,7 +124,7 @@ const state = {
     }
   },
 
-  ////PREPARO EL MENSAJE PARA ENVIAR
+  //PREPARO EL MENSAJE PARA ENVIAR
   sentReportNotUser(id, nameReporter, cellphone, message) {
     const cs = this.getState();
     fetch(API_BASE_URL + "/not-user-report/" + id, {
