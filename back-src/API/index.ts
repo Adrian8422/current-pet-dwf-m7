@@ -28,8 +28,7 @@ import {
   searchDatesInAlgolia,
   updateReportPet,
 } from "../controllers/report-controller";
-import { sendEmailToUser } from "../lib/sendgrid";
-
+import { sendEmailToUser, transporter } from "../lib/mailer";
 const pathResolve = path.resolve("", "dist/index.html");
 const app = express();
 const port = process.env.PORT || 3002;
@@ -41,14 +40,6 @@ app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
 /////SIGNUP
-app.get("/prueba", (req, res) => {
-  res.json({
-    message: process.env.API_KEY_SENDGRID,
-    message2: process.env.DB_HOST,
-    message3: process.env.DATA_BASE,
-    message4: process.env.MAPBOX_TOKEN,
-  });
-});
 
 app.post("/auth", async (req, res) => {
   const createUser = await findOrCreateUser(req.body);

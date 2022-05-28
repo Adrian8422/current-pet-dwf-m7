@@ -45,22 +45,15 @@ class HomeOficial extends HTMLElement {
             const cellphone = target.cellphone.value;
             const message = target.message.value;
 
-            /// SETEO LAS VARIABLES PROXIMAS A ENVIAR
-            state.sentReportNotUser(
-              { id, cellphone, nameReporter, message },
-              () => {
-                ////OBTENGO EL EMAIL DEL USER VINCULADO A ESE REPORTE
-                state.getEmailUsers(() => {
-                  ///ENVIO EL EMAIL
-                  state.sentEmailToUser();
-                  console.log("todo ok");
-                });
-              }
-            );
-            state.setState(cs);
-            setTimeout(() => {
-              alert("mensaje enviado correctamente :D");
-            }, 2000);
+            ////OBTENGO EL EMAIL DEL USER VINCULADO A ESE REPORTE
+            state.getEmailUsers(() => {
+              /// SETEO LAS VARIABLES PROXIMAS A ENVIAR
+              state.sentReportNotUser(id, nameReporter, cellphone, message);
+              setTimeout(() => {
+                state.sentEmailToUser();
+                alert("mensaje enviado correctamente :D");
+              }, 2000);
+            });
           });
         });
       });
@@ -103,6 +96,7 @@ class HomeOficial extends HTMLElement {
       justify-content: center;
       margin: 0 auto;
       margin-top: 60px;
+      align-items: center;
    
      }
      .card{
@@ -132,13 +126,18 @@ class HomeOficial extends HTMLElement {
       
       .form{
         display:none;
-        width: 299px;
-        border: solid 2px;
+        width: 256px;
+        border: solid 0px;
+        border-radius: 14px;
         text-align: center;
         flex-direction: column;
         box-shadow: 1px 1px 16px 0px;
-        background-color: #ffe4c4b5;
+        background-color: #ffe4c4f2;
+        position: fixed;
+        top: 103px;
+        padding: 10px;
       }
+      
       .container-img-close{
         display: flex;
         justify-content: end;

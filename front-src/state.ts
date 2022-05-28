@@ -1,7 +1,7 @@
 type Condition = "registered" | "initiated";
 
-// const API_BASE_URL = "http://localhost:3002";
-const API_BASE_URL = "https://current-desafio-m-7.herokuapp.com";
+const API_BASE_URL = "http://localhost:3002";
+// const API_BASE_URL = "https://current-desafio-m-7.herokuapp.com";
 
 // ("https://pet-app-dwf-m7.herokuapp.com");
 ////
@@ -93,21 +93,6 @@ const state = {
         this.setState(cs);
       });
   },
-  /// TRAIGO UN USUARIO ESPECIFICO
-  getEmailUsers(callback?) {
-    const cs = this.getState();
-    const idUser = cs.reportNotUser.usersOwnersId;
-    fetch(API_BASE_URL + "/one-user/" + idUser)
-      .then((res) => res.json())
-      .then((data) => {
-        console.log("getEmailUsers", data);
-        cs.reportNotUser.usersEmail = data.email;
-        this.setState(cs);
-      });
-
-    callback();
-  },
-
   ///TRAIGO UN REPORT ID
   getOneReportsNotUser(reportID, callback) {
     const cs = this.getState();
@@ -125,9 +110,24 @@ const state = {
       callback();
     }
   },
+  /// TRAIGO UN USUARIO ESPECIFICO
+  getEmailUsers(callback?) {
+    const cs = this.getState();
+    const idUser = cs.reportNotUser.usersOwnersId;
+    fetch(API_BASE_URL + "/one-user/" + idUser)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("getEmailUsers", data);
+        cs.reportNotUser.usersEmail = data.email;
+        this.setState(cs);
+      });
+    if (callback) {
+      callback();
+    }
+  },
 
   ////PREPARO EL MENSAJE PARA ENVIAR
-  sentReportNotUser({ id, cellphone, nameReporter, message }, callback?) {
+  sentReportNotUser(id, nameReporter, cellphone, message) {
     const cs = this.getState();
     fetch(API_BASE_URL + "/not-user-report/" + id, {
       method: "post",
@@ -148,9 +148,6 @@ const state = {
         cs.reportNotUser.message = data.message;
         this.setState(cs);
       });
-    if (callback) {
-      callback();
-    }
   },
 
   ///// ENVIO EL EMAIL
