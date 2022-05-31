@@ -74,7 +74,7 @@ const state = {
     }
   },
 
-  ////SECTION REPORT NOT USERS//////
+  //SECTION REPORT NOT USERS//////
 
   getReports() {
     const cs = this.getState();
