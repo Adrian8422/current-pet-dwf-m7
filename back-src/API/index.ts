@@ -2,6 +2,7 @@ import * as path from "path";
 import * as express from "express";
 import * as cors from "cors";
 import { sequelize } from "../models/connection";
+import bodyParser = require("body-parser");
 import {
   authToken,
   // changePassword,
@@ -33,11 +34,20 @@ const pathResolve = path.resolve("", "dist/index.html");
 const app = express();
 const port = process.env.PORT || 3002;
 
-app.use(express.json());
-app.use(cors());
+// app.use(express.json());
 app.use(express.static("dist"));
-app.use(express.json({ limit: "50mb" }));
+app.use(bodyParser.json({ limit: "50mb" }));
+
+app.use(
+  bodyParser.urlencoded({
+    limit: "50mb",
+    extended: true,
+    parameterLimit: 50000,
+  })
+);
+// app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
+app.use(cors());
 
 /////SIGNUP
 

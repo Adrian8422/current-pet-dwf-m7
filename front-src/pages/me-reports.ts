@@ -33,7 +33,9 @@ class MeReports extends HTMLElement {
       pencil.addEventListener("click", () => {
         const id = pencil.getAttribute("id");
         const idParse = parseInt(id);
-        state.saveAndGetIdReportEdit(idParse);
+
+        state.saveIdReportEdit(idParse);
+        state.getOneReportUser(idParse);
 
         setTimeout(() => {
           Router.go("update-report");

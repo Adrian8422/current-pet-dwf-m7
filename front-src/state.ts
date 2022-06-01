@@ -1,7 +1,7 @@
 type Condition = "registered" | "initiated";
 
-// const API_BASE_URL = "http://localhost:3002";
-const API_BASE_URL = process.env.HOST_STATE;
+const API_BASE_URL = "http://localhost:3002";
+// const API_BASE_URL = process.env.HOST_STATE;
 
 const state = {
   data: {
@@ -358,11 +358,14 @@ const state = {
       });
   },
 
-  ////GET ONE REPORT
-  saveAndGetIdReportEdit(id) {
+  ////SAVE ID ONE REPORT
+  saveIdReportEdit(id) {
     window.localStorage.setItem("idReport", id);
+  },
+
+  getOneReportUser(reportId) {
     const cs = this.getState();
-    fetch(API_BASE_URL + "/me/report/" + id, {
+    fetch(API_BASE_URL + "/me/report/" + reportId, {
       method: "get",
       headers: {
         "content-type": "application/json",
@@ -371,7 +374,6 @@ const state = {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log("el report elegido", data);
         cs.meReport.namePet = data.namePet;
         cs.meReport.location = data.location;
         cs.meReport.lat = data.lat;
@@ -380,6 +382,7 @@ const state = {
         this.setState(cs);
       });
   },
+
   updateReport(idReport) {
     const cs = this.getState();
     const namePet = cs.meReport.namePet;

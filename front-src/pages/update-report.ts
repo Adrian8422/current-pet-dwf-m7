@@ -5,7 +5,6 @@ import * as mapboxgl from "mapbox-gl";
 import MapboxClient from "mapbox";
 const mapboxClient = new MapboxClient(process.env.MAPBOX_TOKEN);
 
-const imgPencil = require("../assets/pencil.png");
 class UpdateReport extends HTMLElement {
   connectedCallback() {
     this.render();
@@ -13,7 +12,8 @@ class UpdateReport extends HTMLElement {
 
   addListeners() {
     const cs = state.getState();
-    let pictureURL;
+
+    let pictureURL = "";
 
     const dropzoneImg: any = this.querySelector(".profile-picture");
     const myDropzone = new Dropzone(dropzoneImg, {
@@ -25,6 +25,7 @@ class UpdateReport extends HTMLElement {
       pictureURL = file.dataURL;
       dropzoneImg.src = file.dataURL;
       pictureURL = file.dataURL;
+      // state.setPicture(pictureURL);
     });
 
     function initMap() {
@@ -85,7 +86,8 @@ class UpdateReport extends HTMLElement {
           ///SETEAMOS LOS DATOS DEL REPORT Y LUEGO LO ENVIAMOS
           state.setDatesMeReport(lng, lat, name, location, pictureURL, () => {
             state.updateReport(window.localStorage.getItem("idReport"));
-            window.localStorage.removeItem("idReport");
+
+            // window.localStorage.removeItem("idReport");
 
             setTimeout(() => {
               Router.go("me-reports");
@@ -99,7 +101,8 @@ class UpdateReport extends HTMLElement {
 
   render() {
     const cs = state.getState();
-    console.log("data del state en render", cs.meReport);
+    const changeImg = cs.meReport.pictureURL;
+    // console.log("data del state en render", cs.meReport);
     const style = document.createElement("style");
     style.innerHTML = `
     .profile-picturer-container{
@@ -159,7 +162,7 @@ class UpdateReport extends HTMLElement {
         <form class="form">
            <input class="input" name="nombre" type="text" placeholder="${cs.meReport.namePet}"/>
          <div class="profile-picturer-container">
-             <img class="profile-picture" src="${cs.meReport.pictureURL}" alt="" />
+             <img class="profile-picture" src="${changeImg}" alt="" />
              <h3 class="text-indication">Arrastrá tu foto aquí</h3>
          </div>
 

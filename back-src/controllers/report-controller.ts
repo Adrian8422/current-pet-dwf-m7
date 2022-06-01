@@ -27,7 +27,7 @@ function bodyParse(body, id) {
   }
 }
 
-export async function updateReportPet(userId: number, reportId, dataUser) {
+export async function updateReportPet(userId: number, idReport, dataUser) {
   if (!userId) {
     throw "error in userId";
   }
@@ -37,36 +37,77 @@ export async function updateReportPet(userId: number, reportId, dataUser) {
       discard_original_filename: true,
       width: 1000,
     });
+    const dataMasImage = {
+      namePet: dataUser.namePet,
+      location: dataUser.location,
+      lat: dataUser.lat,
+      lng: dataUser.lng,
+      pictureURL: imagen.secure_url,
+    };
+    const dataActualizada = await Report.update(dataMasImage, {
+      where: { id: idReport },
+    }).catch((err) => {
+      console.error(err);
+    });
 
-    const user = await User.findByPk(userId);
-    if (user) {
-      const reportAModificar = await Report.update(
-        {
-          namePet: dataUser.namePet,
-          location: dataUser.location,
-          lat: dataUser.lat,
-          lng: dataUser.lng,
-          pictureURL: imagen.secure_url,
-          user_id: user.get("id"),
-        },
-        { where: { id: reportId } }
-      );
-      const report = await Report.findByPk(reportId);
-
-      await index.partialUpdateObject({
-        objectID: report.get("id"),
-        name: report.get("namePet"),
-        location: report.get("location"),
-        pictureURL: imagen.secure_url,
-        _geoloc: {
-          lat: report.get("lat"),
-          lng: report.get("lng"),
-        },
-      });
-      const reporteModificado = await Report.findByPk(reportId);
-      return reporteModificado;
-    }
+    const user = await User.findByPk(userId).catch((err) => {
+      console.error(err);
+    });
+    const reporte = await Report.findByPk(idReport);
+    await index.partialUpdateObject({
+      objectID: reporte.get("id"),
+      name: reporte.get("namePet"),
+      location: reporte.get("location"),
+      pictureURL: imagen.secure_url,
+      _geoloc: {
+        lat: reporte.get("lat"),
+        lng: reporte.get("lng"),
+      },
+    });
+    const reporteModificado = await Report.findByPk(idReport);
+    return reporteModificado;
   }
+
+  // const currentDate = {
+  //   namePet: dataUser.namePet,
+  //   location: dataUser.location,
+  //   lat: dataUser.lat,
+  //   lng: dataUser.lng,
+  //   pictureURL: imagen.secure_url,
+  // };
+  // const indexItem: any = bodyParse(currentDate, idReport);
+  // index.partialUpdateObject(indexItem).then((object) => {
+  //   console.log("todo ok");
+  // });
+  // return currentDate;
+
+  // if (user) {
+  //   const reportAModificar = await Report.update(
+  //     {
+  //       namePet: dataUser.namePet,
+  //       location: dataUser.location,
+  //       lat: dataUser.lat,
+  //       lng: dataUser.lng,
+  //       pictureURL: imagen.secure_url,
+  //       user_id: user.get("id"),
+  //     },
+  //     { where: { id: reportId } }
+  //   );
+  //   const report = await Report.findByPk(reportId);
+
+  //   await index.partialUpdateObject({
+  //     objectID: report.get("id"),
+  //     name: report.get("namePet"),
+  //     location: report.get("location"),
+  //     pictureURL: imagen.secure_url,
+  //     _geoloc: {
+  //       lat: report.get("lat"),
+  //       lng: report.get("lng"),
+  //     },
+  //   });
+  //   const reporteModificado = await Report.findByPk(reportId);
+  //   return reporteModificado;
+  // }
 }
 
 //////////////////////////////////////

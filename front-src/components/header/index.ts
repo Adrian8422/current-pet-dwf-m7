@@ -162,7 +162,7 @@ class Header extends HTMLElement {
                <h3 class="meReport">Reportar mascota</h3>
             </div>
             <div class="user-conected">
-               <h3>User => ${cs.meDate.email}</h3>
+               <h3 style="text-align: center" > User => ${cs.meDate.email}</h3>
                
             </div>
          </div>

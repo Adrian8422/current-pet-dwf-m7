@@ -1,6 +1,6 @@
 import { Router } from "@vaadin/router";
 import { state } from "../state";
-import { Dropzone } from "dropzone";
+import Dropzone from "dropzone";
 import * as mapboxgl from "mapbox-gl";
 import MapboxClient from "mapbox";
 const mapboxClient = new MapboxClient(process.env.MAPBOX_TOKEN);
@@ -101,7 +101,7 @@ class ReportPet extends HTMLElement {
             }
             setTimeout(() => {
               Router.go("me-reports");
-            }, 5000);
+            }, 6000);
           });
           form.reset();
         });
