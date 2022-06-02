@@ -1,7 +1,7 @@
 type Condition = "registered" | "initiated";
 
-const API_BASE_URL = "http://localhost:3002";
-// const API_BASE_URL = process.env.HOST_STATE;
+// const API_BASE_URL = "http://localhost:3002";
+const API_BASE_URL = process.env.HOST_STATE;
 
 const state = {
   data: {
