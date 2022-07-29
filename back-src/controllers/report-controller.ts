@@ -58,6 +58,7 @@ export async function updateReportPet(userId: number, idReport, dataUser) {
       objectID: reporte.get("id"),
       name: reporte.get("namePet"),
       location: reporte.get("location"),
+      emailUser: user["email"],
       pictureURL: imagen.secure_url,
       _geoloc: {
         lat: reporte.get("lat"),
@@ -128,9 +129,13 @@ export async function getOneReport(reportID) {
 
 export async function searchDatesInAlgolia(data) {
   const { lat, lng } = data;
-  const { hits } = await index.search("", {
-    aroundLatLng: [lat, lng].join(","),
-    aroundRadius: 100000,
-  });
-  return hits;
+  if (lat && lng) {
+    const { hits } = await index.search("", {
+      aroundLatLng: [lat, lng].join(","),
+      aroundRadius: 100000,
+    });
+    return hits;
+  } else {
+    return { message: "error no hay ni lat ni lng" };
+  }
 }

@@ -14,24 +14,28 @@ export async function findOrCreateUser(dataUser) {
   if (!email) {
     throw "no hay email";
   }
-  const [user, created] = await User.findOrCreate({
-    where: { email: email },
-    defaults: {
-      email: email,
-      name: name,
-    },
-  });
-  const passwordHasheado = sha256(password);
-  const [auth, authCreated] = await Auth.findOrCreate({
-    where: { email: email, password: passwordHasheado },
-    defaults: {
-      name: name,
-      email: email,
-      password: passwordHasheado,
-      user_id: user.get("id"),
-    },
-  });
-  return { user, auth };
+  try {
+    const [user, created] = await User.findOrCreate({
+      where: { email: email },
+      defaults: {
+        email: email,
+        name: name,
+      },
+    });
+    const passwordHasheado = sha256(password);
+    const [auth, authCreated] = await Auth.findOrCreate({
+      where: { email: email, password: passwordHasheado },
+      defaults: {
+        name: name,
+        email: email,
+        password: passwordHasheado,
+        user_id: user.get("id"),
+      },
+    });
+    return { user, auth };
+  } catch (err) {
+    throw new Error(err);
+  }
 }
 
 ///SIGNIN
@@ -40,18 +44,19 @@ export async function authToken(dataUser) {
   const { email, password } = dataUser;
 
   const passwordHasheado = sha256(password);
-
-  const user = await User.findOne({
-    where: { email: email },
-  });
-  const auth = await Auth.findOne({
-    where: { email: email, password: passwordHasheado },
-  });
-  const token = jwt.sign({ id: auth.get("id") }, SECRET);
-  if (auth) {
-    return { token: token, auth, user };
-  } else {
-    throw "error in signin";
+  try {
+    const user = await User.findOne({
+      where: { email: email },
+    });
+    const auth = await Auth.findOne({
+      where: { email: email, password: passwordHasheado },
+    });
+    const token = jwt.sign({ id: auth.get("id") }, SECRET);
+    if (auth) {
+      return { token: token, auth, user };
+    }
+  } catch (err) {
+    return Error(err);
   }
 }
 
@@ -84,7 +89,8 @@ export async function updateMyDate(user_id, dataUser) {
     const myAuth = await Auth.update(
       { email: email },
       {
-        where: { user_id: user_id },
+        ////arregle esto cambiando de user_id A id
+        where: { id: user_id },
       }
     );
     const myDataAuthModified = await Auth.findByPk(user_id);
@@ -120,7 +126,7 @@ export async function changesPassword(data, user_id) {
 
 /// REPORT PET USER ACTIVE && INSERT IN DATABASES ALGOLIA GEOLOC
 
-export async function reportPetUser(userId: number, dataUser) {
+export async function reportPetUser(userId, dataUser) {
   if (!userId) {
     throw "error not found userId";
   }
@@ -144,6 +150,7 @@ export async function reportPetUser(userId: number, dataUser) {
           objectID: reportCreate.get("id"),
           name: reportCreate.get("namePet"),
           location: reportCreate.get("location"),
+          emailUser: user.get("email"),
           pictureURL: imagen.secure_url,
           _geoloc: {
             lat: reportCreate.get("lat"),
