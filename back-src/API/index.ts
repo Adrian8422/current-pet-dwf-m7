@@ -34,18 +34,9 @@ const pathResolve = path.resolve("", "dist/index.html");
 const app = express();
 const port = process.env.PORT || 3002;
 
-// const corsOptions = {
-//   origin: "*",
-//   credentials: true, //access-control-allow-credentials:true
-//   optionSuccessStatus: 200,
-// };
 // app.use(express.json());
 app.use(express.static("dist"));
-app.use(
-  cors({
-    origin: "*",
-  })
-);
+app.use(cors());
 app.use(bodyParser.json({ limit: "50mb" }));
 
 app.use(
@@ -148,9 +139,10 @@ app.delete("/delete-report/:id", authMiddleware, async (req: any, res) => {
 /// SEARCH DATES LAT&&LNG IN ALGOLIA
 
 app.get("/reports-close-to", async (req, res) => {
-  // if (req.query) {
-  const result = await searchDatesInAlgolia(req.query);
-  res.json(result);
+  if (req.query) {
+    const result = await searchDatesInAlgolia(req.query);
+    res.json(result);
+  }
 });
 
 ////REPORT NOT USER/// /// NO LOGIN NO SIGNUP
