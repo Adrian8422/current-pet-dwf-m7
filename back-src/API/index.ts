@@ -34,9 +34,14 @@ const pathResolve = path.resolve("", "dist/index.html");
 const app = express();
 const port = process.env.PORT || 3002;
 
+const corsOptions = {
+  origin: "*",
+  credentials: true, //access-control-allow-credentials:true
+  optionSuccessStatus: 200,
+};
 // app.use(express.json());
 app.use(express.static("dist"));
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(bodyParser.json({ limit: "50mb" }));
 
 app.use(
