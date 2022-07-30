@@ -129,13 +129,10 @@ export async function getOneReport(reportID) {
 
 export async function searchDatesInAlgolia(data) {
   const { lat, lng } = data;
-  if (lat && lng) {
-    const { hits } = await index.search("", {
-      aroundLatLng: [lat, lng].join(","),
-      aroundRadius: 100000,
-    });
-    return hits;
-  } else {
-    return { message: "error no hay ni lat ni lng" };
-  }
+
+  const { hits } = await index.search("", {
+    aroundLatLng: [lat, lng].join(","),
+    aroundRadius: 100000,
+  });
+  return hits;
 }

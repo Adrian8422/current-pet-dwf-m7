@@ -139,8 +139,10 @@ app.delete("/delete-report/:id", authMiddleware, async (req: any, res) => {
 /// SEARCH DATES LAT&&LNG IN ALGOLIA
 
 app.get("/reports-close-to", async (req, res) => {
-  const result = await searchDatesInAlgolia(req.query);
-  res.json(result);
+  if (req.query) {
+    const result = await searchDatesInAlgolia(req.query);
+    res.json(result);
+  }
 });
 
 ////REPORT NOT USER/// /// NO LOGIN NO SIGNUP
