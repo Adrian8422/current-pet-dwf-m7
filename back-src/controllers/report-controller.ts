@@ -129,10 +129,22 @@ export async function getOneReport(reportID) {
 
 export async function searchDatesInAlgolia(data) {
   const { lat, lng } = data;
-
-  const { hits } = await index.search("", {
-    aroundLatLng: [lat, lng].join(","),
-    aroundRadius: 100000,
-  });
-  return hits;
+  if (lat && lng) {
+    const { hits } = await index.search("", {
+      aroundLatLng: [lat, lng].join(","),
+      aroundRadius: 100000,
+    });
+    return hits;
+  }
+  try {
+    if (lat && lng) {
+      const { hits } = await index.search("", {
+        aroundLatLng: [lat, lng].join(","),
+        aroundRadius: 100000,
+      });
+      return hits;
+    }
+  } catch (error) {
+    return console.log(error);
+  }
 }

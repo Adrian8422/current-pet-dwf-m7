@@ -83,11 +83,13 @@ app.put("/me/modified", authMiddleware, async (req: any, res) => {
 
 app.post("/change-password", authMiddleware, async (req: any, res) => {
   const { id } = req._user;
-  if (req.body && id) {
+  if (id && req.body) {
     const passwordChangedSuccessfully = await changesPassword(req.body, id);
     res.json(passwordChangedSuccessfully);
+    res.status(200);
   } else {
     res.json({ message: "error" });
+    res.status(401);
   }
 });
 
