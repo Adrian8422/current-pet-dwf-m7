@@ -44,18 +44,25 @@ export async function authToken(dataUser) {
   const { email, password } = dataUser;
 
   const passwordHasheado = sha256(password);
-
-  const user = await User.findOne({
-    where: { email: email },
-  });
-  const auth = await Auth.findOne({
-    where: { email: email, password: passwordHasheado },
-  });
-  const token = jwt.sign({ id: auth.get("id") }, SECRET);
-  if (auth) {
-    return { token: token, auth, user };
-  } else {
-    return { message: "error en signin" };
+  if (dataUser) {
+    const user = await User.findOne({
+      where: { email: email },
+    });
+    if (!user) {
+      return { message: "no se encuentra logueado" };
+    } else if (user) {
+      const auth = await Auth.findOne({
+        where: { email: email, password: passwordHasheado },
+      });
+      const token = jwt.sign({ id: auth.get("id") }, SECRET);
+      if (auth) {
+        return { token: token, auth, user };
+      }
+    } else {
+      return {
+        message: "no hay datos",
+      };
+    }
   }
 }
 
