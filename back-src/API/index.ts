@@ -60,7 +60,12 @@ app.post("/auth", async (req, res) => {
 
 app.post("/auth/token", async (req, res) => {
   const authUserToken = await authToken(req.body);
-  res.json(authUserToken);
+  if (authUserToken) {
+    res.json(authUserToken);
+  } else {
+    res.json({ message: "error" });
+    res.status(405);
+  }
 });
 
 ///MY DATE

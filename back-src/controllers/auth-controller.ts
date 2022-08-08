@@ -44,7 +44,7 @@ export async function authToken(dataUser) {
   const { email, password } = dataUser;
 
   const passwordHasheado = sha256(password);
-  try {
+  if (dataUser) {
     const user = await User.findOne({
       where: { email: email },
     });
@@ -55,8 +55,10 @@ export async function authToken(dataUser) {
     if (auth) {
       return { token: token, auth, user };
     }
-  } catch (err) {
-    return Error(err);
+  } else {
+    return {
+      message: "error in signin",
+    };
   }
 }
 
