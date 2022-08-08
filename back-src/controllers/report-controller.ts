@@ -136,4 +136,15 @@ export async function searchDatesInAlgolia(data) {
     });
     return hits;
   }
+  try {
+    if (lat && lng) {
+      const { hits } = await index.search("", {
+        aroundLatLng: [lat, lng].join(","),
+        aroundRadius: 1000000,
+      });
+      return hits;
+    }
+  } catch (error) {
+    return console.log(error);
+  }
 }
