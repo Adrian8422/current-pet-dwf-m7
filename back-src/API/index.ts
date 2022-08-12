@@ -62,7 +62,7 @@ app.use(function (req, res, next) {
   next();
 });
 
-/////SIGNUP
+////SIGNUP
 
 app.post("/auth", async (req, res) => {
   const createUser = await findOrCreateUser(req.body);
