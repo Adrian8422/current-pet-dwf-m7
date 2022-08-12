@@ -174,7 +174,7 @@ app.post("/not-user-report/:id", async (req, res) => {
   res.json(report);
 });
 
-///ALL REPORTS OF ALL USERS
+//ALL REPORTS OF ALL USERS
 app.get("/all-reports", async (req, res) => {
   const allReports = await allReportsOfAllUsers();
   res.json(allReports);
