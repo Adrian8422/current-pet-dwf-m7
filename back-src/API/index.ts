@@ -69,7 +69,7 @@ app.post("/auth", async (req, res) => {
   res.json(createUser);
 });
 
-/// SIGNIN
+// SIGNIN
 
 app.post("/auth/token", async (req, res) => {
   const authUserToken = await authToken(req.body);
@@ -159,6 +159,7 @@ app.delete("/delete-report/:id", authMiddleware, async (req: any, res) => {
 /// SEARCH DATES LAT&&LNG IN ALGOLIA
 
 app.get("/reports-close-to", async (req, res) => {
+  res.header("Access-Control-Allow-Origin", "*");
   if (req.query) {
     const result = await searchDatesInAlgolia(req.query);
     res.json(result);
