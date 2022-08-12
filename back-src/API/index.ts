@@ -35,12 +35,8 @@ const app = express();
 const port = process.env.PORT || 3002;
 
 // app.use(express.json());
-const listAceptedDomain = [
-  "https://current-desafio-m-7.herokuapp.com",
-  "http://localhost:3002",
-];
 app.use(express.static("dist"));
-app.use(cors({ origin: listAceptedDomain }));
+app.use(cors());
 app.use(bodyParser.json({ limit: "50mb" }));
 
 app.use(
