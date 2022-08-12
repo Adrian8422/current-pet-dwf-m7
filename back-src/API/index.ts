@@ -35,8 +35,9 @@ const app = express();
 const port = process.env.PORT || 3002;
 
 // app.use(express.json());
+const listAceptedDomain = ["http://localhost:3002", process.env.HOST_STATE];
 app.use(express.static("dist"));
-app.use(cors());
+app.use(cors({ origin: listAceptedDomain }));
 app.use(bodyParser.json({ limit: "50mb" }));
 
 app.use(
