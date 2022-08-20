@@ -149,7 +149,7 @@ export async function reportPetUser(userId, dataUser) {
       if (user) {
         const reportCreate = await Report.create({
           ...dataUser,
-          pictureURL: imagen.secure_url,
+          pictureURL: imagen["secure_url"],
           user_id: user.get("id"),
         });
         await index.saveObject({
@@ -163,7 +163,7 @@ export async function reportPetUser(userId, dataUser) {
             lng: reportCreate.get("lng"),
           },
         });
-        return reportCreate;
+        return await reportCreate;
       }
     }
   }
