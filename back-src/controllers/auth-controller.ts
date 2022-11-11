@@ -20,6 +20,7 @@ export async function findOrCreateUser(dataUser) {
       defaults: {
         email: email,
         name: name,
+        password: password,
       },
     });
     const passwordHasheado = sha256(password);
@@ -50,18 +51,15 @@ export async function authToken(dataUser) {
     });
     if (!user) {
       return { message: "no se encuentra logueado" };
-    } else if (user) {
-      const auth = await Auth.findOne({
-        where: { email: email, password: passwordHasheado },
-      });
-      const token = jwt.sign({ id: auth.get("id") }, SECRET);
-      if (auth) {
-        return { token: token, auth, user };
-      }
+    }
+    const auth = await Auth.findOne({
+      where: { email: email, password: passwordHasheado },
+    });
+    const token = jwt.sign({ id: auth.get("id") }, SECRET);
+    if (auth) {
+      return { token: token, auth, user };
     } else {
-      return {
-        message: "no hay datos",
-      };
+      return { message: "error" };
     }
   }
 }
@@ -133,23 +131,24 @@ export async function changesPassword(data, user_id) {
 /// REPORT PET USER ACTIVE && INSERT IN DATABASES ALGOLIA GEOLOC
 
 export async function reportPetUser(userId, dataUser) {
+  console.log("userId", userId);
   if (!userId) {
     throw "error not found userId";
   }
 
   if (userId) {
-    if (dataUser.pictureURL) {
-      const imagen = await cloudinary.uploader.upload(dataUser.pictureURL, {
-        resource_type: "image",
-        discard_original_filename: true,
-        width: 1000,
-      });
+    const user = await User.findByPk(userId);
 
-      const user = await User.findByPk(userId);
-      if (user) {
+    if (user) {
+      if (dataUser.pictureURL) {
+        const imagen = await cloudinary.uploader.upload(dataUser.pictureURL, {
+          resource_type: "image",
+          discard_original_filename: true,
+          width: 1000,
+        });
         const reportCreate = await Report.create({
           ...dataUser,
-          pictureURL: imagen["secure_url"],
+          pictureURL: imagen.secure_url,
           user_id: user.get("id"),
         });
         await index.saveObject({
@@ -163,7 +162,7 @@ export async function reportPetUser(userId, dataUser) {
             lng: reportCreate.get("lng"),
           },
         });
-        return await reportCreate;
+        return reportCreate;
       }
     }
   }

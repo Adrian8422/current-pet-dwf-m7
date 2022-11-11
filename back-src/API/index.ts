@@ -140,7 +140,7 @@ app.post("/report-pet", authMiddleware, async (req: any, res) => {
   ///endpoint crear pet con user registrado
   const { id } = req._user;
   const createReported = await reportPetUser(id, req.body).catch((err) => {
-    res.status(400).json({ message: err });
+    res.status(405).json({ message: err });
   });
   res.json(createReported);
 });
@@ -306,4 +306,4 @@ app.listen(port, () => {
   console.log(`service in http://localhost:${port}`);
 });
 
-// sequelize.sync({ alter: true });
+sequelize.sync({ force: true });
