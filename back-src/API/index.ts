@@ -306,4 +306,4 @@ app.listen(port, () => {
   console.log(`service in http://localhost:${port}`);
 });
 
-sequelize.sync({ force: true });
+// sequelize.sync({ force: true });
