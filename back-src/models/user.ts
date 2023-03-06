@@ -9,5 +9,5 @@ User.init(
     email: DataTypes.STRING,
     password: DataTypes.STRING,
   },
-  { sequelize, modelName: "user" }
+  { sequelize, modelName: "users" }
 );
