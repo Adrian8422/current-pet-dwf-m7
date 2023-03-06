@@ -16,10 +16,10 @@ export async function sendEmailToUser(emailUser, name, message, cellphone) {
     .sendMail({
       from: '"Forgot password 👻" <manbassman1996@gmail.com>', // sender address
       to: emailUser, // list of receivers
-      subject: `${name} vio tu mascota`, // Subject line
-      text: `His cellphone is: ${cellphone}`, // plain text body
-      html: `<strong> Your pet was seen in: ${message} </strong>
-    and his cellphone ${cellphone} `, // html body
+      subject: `${name} `, // Subject line
+      text: ` ${cellphone}`, // plain text body
+      html: `<strong>  ${message} </strong>
+     ${cellphone} `, // html body
     })
     .catch((error) => {
       console.log("aca esta", error);

@@ -47,7 +47,7 @@ class MeReports extends HTMLElement {
       deleted.addEventListener("click", () => {
         const valor: any = deleted.getAttribute("value");
         const id = parseInt(valor);
-        console.log("valor deleted", id);
+        console.log("valor dele", id);
         state.deletedReport(id, () => {
           setTimeout(() => {
             state.getMeReports();

@@ -1,6 +1,6 @@
 import * as path from "path";
 import * as express from "express";
-import * as cors from "cors";
+let cors = require("cors");
 import { sequelize } from "../models/connection";
 import bodyParser = require("body-parser");
 import {
@@ -36,6 +36,7 @@ const port = process.env.PORT || 3002;
 
 // app.use(express.json());
 app.use(express.static("dist"));
+app.use(cors());
 app.use(bodyParser.json({ limit: "50mb" }));
 
 app.use(
@@ -47,35 +48,71 @@ app.use(
 );
 // app.use(express.json({ limit: "50mb" }));
 // app.use(express.urlencoded({ limit: "50mb", extended: true }));
-app.use(cors());
+app.use(function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Credentials", "true");
+  res.header(
+    "Access-Control-Allow-Methods",
+    "GET,PUT,POST,DELETE,UPDATE,OPTIONS"
+  );
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin,x-Requested-With,Content-Type,Accept,content-type,application/json"
+  );
+  next();
+});
 
-/////SIGNUP
+//SIGNUP
 
 app.post("/auth", async (req, res) => {
-  const createUser = await findOrCreateUser(req.body);
+  const createUser = await findOrCreateUser(req.body).catch((err) => {
+    res.status(400).json({
+      message: err,
+    });
+  });
   res.json(createUser);
 });
 
-/// SIGNIN
+// SIGNIN
 
 app.post("/auth/token", async (req, res) => {
-  const authUserToken = await authToken(req.body);
-  res.json(authUserToken);
+  if (!req.body) {
+    return res.status(400).json({
+      message: "no estan todos los datos",
+    });
+  } else {
+    try {
+      const authUserToken = await authToken(req.body);
+
+      res.json(authUserToken);
+    } catch (error) {
+      res.status(405).json({
+        message: error,
+      });
+    }
+  }
 });
 
 ///MY DATE
 
 app.get("/me", authMiddleware, async (req: any, res) => {
   const { id } = req._user;
-  const userMe = await getMyDate(id);
+  const userMe = await getMyDate(id).catch((err) => {
+    res.status(400).json({
+      message: err,
+    });
+  });
+
   res.json(userMe);
-  console.log(userMe.getDataValue("password"));
+  // console.log(userMe.getDataValue("password"));
 });
 
 ///UPDATE MY DATE
 app.put("/me/modified", authMiddleware, async (req: any, res) => {
   const { id } = req._user;
-  const myNewData = await updateMyDate(id, req.body);
+  const myNewData = await updateMyDate(id, req.body).catch((err) => {
+    res.status(400).json({ message: err });
+  });
   res.json(myNewData);
 });
 
@@ -83,11 +120,17 @@ app.put("/me/modified", authMiddleware, async (req: any, res) => {
 
 app.post("/change-password", authMiddleware, async (req: any, res) => {
   const { id } = req._user;
-  if (req.body && id) {
-    const passwordChangedSuccessfully = await changesPassword(req.body, id);
+  if (id && req.body) {
+    const passwordChangedSuccessfully = await changesPassword(
+      req.body,
+      id
+    ).catch((error) => {
+      res.status(400).json({
+        message: error,
+      });
+    });
     res.json(passwordChangedSuccessfully);
-  } else {
-    res.json({ message: "error" });
+    res.status(200);
   }
 });
 
@@ -96,7 +139,9 @@ app.post("/change-password", authMiddleware, async (req: any, res) => {
 app.post("/report-pet", authMiddleware, async (req: any, res) => {
   ///endpoint crear pet con user registrado
   const { id } = req._user;
-  const createReported = await reportPetUser(id, req.body);
+  const createReported = await reportPetUser(id, req.body).catch((err) => {
+    res.status(405).json({ message: err });
+  });
   res.json(createReported);
 });
 
@@ -107,7 +152,11 @@ app.put(
   async (req: any, res) => {
     const { id } = req._user;
     const { idReport } = req.params;
-    const updateReport = await updateReportPet(id, idReport, req.body);
+    const updateReport = await updateReportPet(id, idReport, req.body).catch(
+      (err) => {
+        res.status(401).json({ message: err });
+      }
+    );
     res.json(updateReport);
   }
 );
@@ -116,7 +165,11 @@ app.put(
 
 app.get("/me/reports-pets", authMiddleware, async (req: any, res) => {
   const { id } = req._user;
-  const reportsOwner = await meReports(id);
+  const reportsOwner = await meReports(id).catch((err) => {
+    res.status(400).json({
+      message: err,
+    });
+  });
   res.json(reportsOwner);
 });
 
@@ -125,35 +178,54 @@ app.get("/me/reports-pets", authMiddleware, async (req: any, res) => {
 app.get("/me/report/:reportId", authMiddleware, async (req: any, res) => {
   const { id } = req._user;
   const { reportId } = req.params;
-  const getMyReport = await getMyreportOneForOne(id, reportId);
+  const getMyReport = await getMyreportOneForOne(id, reportId).catch((err) => {
+    res.status(400).json({ message: err });
+  });
   res.json(getMyReport);
 });
 /// DELETED REPORT
 
 app.delete("/delete-report/:id", authMiddleware, async (req: any, res) => {
   const { id } = req.params;
-  const reportDeleted = await deletedReport(id);
+  const reportDeleted = await deletedReport(id).catch((err) => {
+    res.status(400).json({ message: err });
+  });
   res.json({ message: "report DELETED" });
 });
 
 /// SEARCH DATES LAT&&LNG IN ALGOLIA
 
 app.get("/reports-close-to", async (req, res) => {
-  const result = await searchDatesInAlgolia(req.query);
-  res.json(result);
+  res.header("Access-Control-Allow-Origin", "*");
+  if (req.query) {
+    const result = await searchDatesInAlgolia(req.query).catch((err) => {
+      res.status(400).json({
+        message: err,
+      });
+    });
+    res.json(result);
+  }
 });
 
-////REPORT NOT USER/// /// NO LOGIN NO SIGNUP
+///REPORT NOT USER// // NO LOGIN NO SIGNUP
 
 app.post("/not-user-report/:id", async (req, res) => {
   const { id } = req.params;
-  const report = await reportNotUser(id, req.body);
+  const report = await reportNotUser(id, req.body).catch((err) => {
+    res.status(400).json({
+      message: err,
+    });
+  });
   res.json(report);
 });
 
-///ALL REPORTS OF ALL USERS
+////ALL REPORTS OF ALL USERS
 app.get("/all-reports", async (req, res) => {
-  const allReports = await allReportsOfAllUsers();
+  const allReports = await allReportsOfAllUsers().catch((err) => {
+    res.status(400).json({
+      message: err,
+    });
+  });
   res.json(allReports);
 });
 
@@ -161,28 +233,44 @@ app.get("/all-reports", async (req, res) => {
 
 app.get("/report/:id", async (req, res) => {
   const { id } = req.params;
-  const report = await getOneReport(id);
+  const report = await getOneReport(id).catch((err) => {
+    res.status(400).json({
+      message: err,
+    });
+  });
   res.json(report);
 });
 
 ///ALL USERS nose si hace falta prox end point
 
 app.get("/users-all", async (req, res) => {
-  const allUsers = await getAllUsers();
+  const allUsers = await getAllUsers().catch((err) => {
+    res.status(400).json({
+      message: err,
+    });
+  });
   res.json(allUsers);
 });
 
 // GET ONE USER
 app.get("/one-user/:id", async (req, res) => {
   const { id } = req.params;
-  const oneUser = await getOneUser(id);
+  const oneUser = await getOneUser(id).catch((err) => {
+    res.status(400).json({
+      message: err,
+    });
+  });
   res.json(oneUser);
 });
 
 ///ALL REPORTS NOT USER SENT MESSAGE
 
 app.get("/all-reports-not-user", async (req, res) => {
-  const allReportsNotUser = await allReportsSentNotUser();
+  const allReportsNotUser = await allReportsSentNotUser().catch((err) => {
+    res.status(400).json({
+      message: err,
+    });
+  });
   res.json(allReportsNotUser);
 });
 
@@ -197,7 +285,11 @@ app.post("/email", async (req, res) => {
       name,
       message,
       cellphone
-    );
+    ).catch((err) => {
+      res.status(400).json({
+        message: err,
+      });
+    });
     res.json({ message: "enviado" });
   }
 });
@@ -214,4 +306,4 @@ app.listen(port, () => {
   console.log(`service in http://localhost:${port}`);
 });
 
-// sequelize.sync({ alter: true });
+// sequelize.sync({ force: true });
