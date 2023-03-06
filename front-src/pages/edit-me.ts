@@ -10,7 +10,7 @@ class EditMeDate extends HTMLElement {
 
   addListeners() {
     const cs = state.getState();
-    const form = this.querySelector(".form");
+    const form: any = this.querySelector(".form");
     form.addEventListener("submit", (event) => {
       event.preventDefault();
       const target = event.target as any;

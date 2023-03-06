@@ -16,7 +16,7 @@ class HomeOficial extends HTMLElement {
 
   addListeners() {
     const cs = state.getState();
-    const notPetTitle = this.querySelector(".not-pet");
+    const notPetTitle: any = this.querySelector(".not-pet");
     if (cs.reportNotUser.reportsCloseToMe[0]) {
       notPetTitle.setAttribute("style", "display:none");
     }
@@ -25,18 +25,18 @@ class HomeOficial extends HTMLElement {
     const sentReportNotUser = this.querySelectorAll(".report-info");
     sentReportNotUser.forEach((report) => {
       report.addEventListener("click", () => {
-        const form = this.querySelector(".form");
+        const form: any = this.querySelector(".form");
         form.setAttribute("style", "display:flex");
       });
     });
     //// OBTENGO ID DE CADA CARDpET Y REALIZO SUBMIT A EL ID QUE SELECCIONE
     sentReportNotUser.forEach((e) => {
       e.addEventListener("click", (event) => {
-        const id = e.getAttribute("id");
+        const id: any = e.getAttribute("id");
         const idParse = parseInt(id);
 
         state.getOneReportsNotUser(idParse, () => {
-          const formSubmit = this.querySelector(".form");
+          const formSubmit: any = this.querySelector(".form");
           formSubmit.addEventListener("submit", (e) => {
             e.preventDefault();
             const target = e.target as any;
@@ -62,7 +62,7 @@ class HomeOficial extends HTMLElement {
 
       closeWindowReport.forEach((form) => {
         form.addEventListener("click", () => {
-          const formReport = this.querySelector(".form");
+          const formReport: any = this.querySelector(".form");
           formReport.setAttribute("style", "display:none");
         });
       });

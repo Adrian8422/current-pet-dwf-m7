@@ -1,8 +1,7 @@
 type Condition = "registered" | "initiated";
 
-// const API_BASE_URL = "http://localhost:3002";
-const API_BASE_URL = process.env.HOST_STATE;
-
+const API_BASE_URL = "http://localhost:3002";
+// const API_BASE_URL = process.env.HOST_STATE;
 const state = {
   data: {
     registerDate: {
@@ -68,7 +67,8 @@ const state = {
     if (!localStorage.meDate) {
       this.setState(dataMe);
     } else {
-      const localData = JSON.parse(localStorage.getItem("meDate"));
+      const localstorage: any = localStorage.getItem("meDate");
+      const localData = JSON.parse(localstorage);
       dataMe.meDate = localData;
       this.setState(dataMe);
     }

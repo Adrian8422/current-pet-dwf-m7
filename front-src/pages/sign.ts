@@ -10,15 +10,15 @@ class Sign extends HTMLElement {
   addListeners() {
     const cs = state.getState();
     ////cambio de formulario segun eleccion
-    const titleSignUp = this.querySelector(".container-get-register");
-    const titleSignIn = this.querySelector(".container-get-login");
-    const buttonGetRegister = this.querySelector(".button-register");
-    const buttonGetLogin = this.querySelector(".button-login");
-    const buttonChangeAloginForSubmitOkey = this.querySelector(
+    const titleSignUp: any = this.querySelector(".container-get-register");
+    const titleSignIn: any = this.querySelector(".container-get-login");
+    const buttonGetRegister: any = this.querySelector(".button-register");
+    const buttonGetLogin: any = this.querySelector(".button-login");
+    const buttonChangeAloginForSubmitOkey: any = this.querySelector(
       ".button-signupAsignin"
     );
-    const formSignUp: HTMLFormElement = this.querySelector(".form-signup");
-    const formSignIn: HTMLFormElement = this.querySelector(".form-signin");
+    const formSignUp: any = this.querySelector(".form-signup");
+    const formSignIn: any = this.querySelector(".form-signin");
     buttonGetRegister.addEventListener("click", () => {
       titleSignUp.setAttribute("style", "display:none");
       titleSignIn.setAttribute("style", "display:flex");

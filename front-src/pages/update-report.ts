@@ -38,8 +38,7 @@ class UpdateReport extends HTMLElement {
 
     function initSearchForm(callback) {
       ///  Insert date location
-      const formSearch: HTMLFormElement =
-        document.querySelector(".input-search");
+      const formSearch: any = document.querySelector(".input-search");
       console.log(formSearch);
       const buscar: any = document.querySelector(".confirmar-ubicacion");
 
@@ -76,7 +75,7 @@ class UpdateReport extends HTMLElement {
         lng = long;
         lat = latitude;
         //submit del form complete
-        const form: HTMLFormElement = document.querySelector(".form");
+        const form: any = document.querySelector(".form");
         console.log("el formulario", form);
         form.addEventListener("submit", (e) => {
           e.preventDefault();

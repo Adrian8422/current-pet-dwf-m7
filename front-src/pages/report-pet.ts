@@ -31,7 +31,7 @@ class ReportPet extends HTMLElement {
       pictureURL = file.dataURL;
     });
 
-    const reportForm = this.querySelector(".form");
+    const reportForm: any = this.querySelector(".form");
     reportForm.addEventListener("submit", (event) => {
       event.preventDefault();
     });
@@ -45,8 +45,7 @@ class ReportPet extends HTMLElement {
 
     function initSearchForm(callback) {
       ///  Insert date location
-      const formSearch: HTMLFormElement =
-        document.querySelector(".input-search");
+      const formSearch: any = document.querySelector(".input-search");
       console.log(formSearch);
       const buscar: any = document.querySelector(".confirmar-ubicacion");
 
@@ -83,7 +82,7 @@ class ReportPet extends HTMLElement {
         lng = long;
         lat = latitude;
         //submit del form complete
-        const form: HTMLFormElement = document.querySelector(".form");
+        const form: any = document.querySelector(".form");
         form.addEventListener("submit", (e) => {
           e.preventDefault();
           const target = e.target as any;
@@ -93,9 +92,10 @@ class ReportPet extends HTMLElement {
           state.setDatesMeReport(lng, lat, name, location, pictureURL, () => {
             state.createReport();
             if (cs.meReport.pictureURL) {
-              const loadingContainer =
+              const loadingContainer: any =
                 document.querySelector(".container-load");
-              const containerPage = document.querySelector(".container-page");
+              const containerPage: any =
+                document.querySelector(".container-page");
               containerPage.setAttribute("style", "display:none");
               loadingContainer.setAttribute("style", "display:flex");
             }

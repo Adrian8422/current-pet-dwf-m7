@@ -21,7 +21,7 @@ class MeReports extends HTMLElement {
 
   addListeners() {
     const cs = state.getState();
-    const notPetTitle = this.querySelector(".not-pet");
+    const notPetTitle: any = this.querySelector(".not-pet");
 
     if (cs.meDate.reports[0]) {
       notPetTitle.setAttribute("style", "display:none");
@@ -31,7 +31,7 @@ class MeReports extends HTMLElement {
     const editRedirectPage = this.querySelectorAll(".pencil");
     editRedirectPage.forEach((pencil) => {
       pencil.addEventListener("click", () => {
-        const id = pencil.getAttribute("id");
+        const id: any = pencil.getAttribute("id");
         const idParse = parseInt(id);
 
         state.saveIdReportEdit(idParse);
@@ -45,7 +45,7 @@ class MeReports extends HTMLElement {
     const deletedReport = this.querySelectorAll(".deleted-report");
     deletedReport.forEach((deleted) => {
       deleted.addEventListener("click", () => {
-        const valor = deleted.getAttribute("value");
+        const valor: any = deleted.getAttribute("value");
         const id = parseInt(valor);
         console.log("valor deleted", id);
         state.deletedReport(id, () => {

@@ -28,7 +28,7 @@ class Homepage extends HTMLElement {
   }
   addlisteners() {
     const cs = state.getState();
-    const button = this.querySelector(".button-el");
+    const button: any = this.querySelector(".button-el");
     button.addEventListener("click", () => {
       const options = {
         enableHighAccuracy: true,
@@ -48,7 +48,7 @@ class Homepage extends HTMLElement {
       navigator.geolocation.getCurrentPosition(successfully, error, options);
       setTimeout(() => {
         Router.go("home-oficial");
-      }, 1000);
+      }, 3000);
     });
   }
   render() {

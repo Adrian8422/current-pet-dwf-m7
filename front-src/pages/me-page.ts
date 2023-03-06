@@ -9,19 +9,20 @@ class MeDate extends HTMLElement {
   }
 
   addListeners() {
-    const editPerfil = this.querySelector(".button-editar-perfil");
+    const editPerfil: any = this.querySelector(".button-editar-perfil");
     editPerfil.addEventListener("click", () => {
       Router.go("edit-me");
     });
-    const changePassword = this.querySelector(".button-cambiar-password");
+    const changePassword: any = this.querySelector(".button-cambiar-password");
     changePassword.addEventListener("click", () => {
       Router.go("change-password");
     });
     /// Seguro cerrar sesion?
-    const windowCloseSession = this.querySelector(".window-close-sesion");
-    const buttonCloseSessionInWindow = this.querySelector(".button-window");
-    const buttonReturnSesion = this.querySelector(".button-window-volver");
-    const closeSesion = this.querySelector(".button-cerrar-sesion");
+    const windowCloseSession: any = this.querySelector(".window-close-sesion");
+    const buttonCloseSessionInWindow: any =
+      this.querySelector(".button-window");
+    const buttonReturnSesion: any = this.querySelector(".button-window-volver");
+    const closeSesion: any = this.querySelector(".button-cerrar-sesion");
     closeSesion.addEventListener("click", () => {
       windowCloseSession.setAttribute("style", "display:flex");
     });
