@@ -8,11 +8,11 @@ export const sequelize = new Sequelize({
   port: 5432,
   host: process.env.DB_HOST,
   ssl: true,
-  ///esto es necesario para que corra correctamente
-  dialectOptions: {
-    ssl: {
-      require: true,
-      rejectUnauthorized: false,
-    },
-  },
+  ///esto es necesario para que corra correctament
+  // dialectOptions: {
+  //   ssl: {
+  //     require: true,
+  //     rejectUnauthorized: false,
+  //   },
+  // },
 });
