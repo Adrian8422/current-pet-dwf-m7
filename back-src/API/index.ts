@@ -30,6 +30,7 @@ import {
   updateReportPet,
 } from "../controllers/report-controller";
 import { sendEmailToUser, transporter } from "../lib/mailer";
+import { User } from "../models/user";
 const pathResolve = path.resolve("", "dist/index.html");
 const app = express();
 const port = process.env.PORT || 3002;
@@ -65,12 +66,15 @@ app.use(function (req, res, next) {
 //SIGNUP
 
 app.post("/auth", async (req, res) => {
+  const data = await User.tableName;
+  console.log({ data });
+
   const createUser = await findOrCreateUser(req.body).catch((err) => {
     res.status(400).json({
       message: err,
     });
   });
-  res.json(createUser);
+  res.json(data);
 });
 
 // SIGNIN
